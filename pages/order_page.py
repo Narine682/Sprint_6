@@ -1,59 +1,33 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from locators.locators import OrderPageLocators
+from locators.order_page_locators import OrderPageLocators
+from pages.base_page import BasePage
 
-class OrderPage:
+class OrderPage(BasePage):
     locators = OrderPageLocators
 
-    @classmethod
-    def fill_first_step(cls, driver, name, surname, address, metro, phone):
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(cls.locators.NAME_INPUT)
-        )
 
-        driver.find_element(*cls.locators.NAME_INPUT).send_keys(name)
-        driver.find_element(*cls.locators.SURNAME_INPUT).send_keys(surname)
-        driver.find_element(*cls.locators.ADDRESS_INPUT).send_keys(address)
-        driver.find_element(*cls.locators.METRO_INPUT).send_keys(metro)
-        driver.find_element(*cls.locators.PHONE_INPUT).send_keys(phone)
+    def fill_first_step(self, name, surname, address, metro, phone):
+         self.send_keys(self.locators.NAME_INPUT,name)
+         self.send_keys(self.locators.SURNAME_INPUT, surname)
+         self.send_keys(self.locators.ADDRESS_INPUT, address)
+         self.send_keys(self.locators.METRO_INPUT,metro)
+         self.send_keys(self.locators.PHONE_INPUT, phone)
 
-        next_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(cls.locators.NEXT_BUTTON)
-        )
-        next_button.click()
 
-    @classmethod
-    def fill_second_step_and_confirm(cls, driver, rental_date="2025-10-05"):
-        date_input = WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(cls.locators.DELIVERY_DATE_INPUT)
-            )
-        date_input.send_keys(rental_date)
 
-        dropdown = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(OrderPageLocators.RENTAL_PERIOD_DROPDOWN)
-        )
-        dropdown.click()
-        option = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(cls.locators.RENTAL_DAYS_OPTION)
-        )
-        option.click()
 
-        order_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(cls.locators.ORDER_BUTTON_FINAL)
-        )
-        order_button.click()
+    def fill_second_step_and_confirm(self, rental_date="2025-10-07"):
+        self.send_keys(self.locators.DELIVERY_DATE_INPUT, rental_date)
+        self.click(self.locators.RENTAL_PERIOD_DROPDOWN)
+        self.click(self.locators.RENTAL_DAYS_OPTION)
+        self.click(self.locators.ORDER_BUTTON_FINAL)
+        self.click(self.locators.CONFIRM_YES)
 
-        confirm_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(cls.locators.CONFIRM_YES)
-        )
-        confirm_button.click()
-    @classmethod
-    def is_success_modal_visible(cls, driver):
+
+    def is_success_modal_visible(self):
         try:
-            el = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(cls.locators.SUCCESS_MODAL)
-            )
-
+            el = self.wait.until(EC.presence_of_element_located(self.locators.SUCCESS_MODAL))
             return el.is_displayed()
         except:
             return False

@@ -1,24 +1,30 @@
 import pytest
 import allure
 from pages.main_page import MainPage
+from pages.order_page import OrderPage
 from data import BASE_URL
 
-@allure.feature("Navigation")
-class TestNavigation:
-    @allure.title("Логотип Самоката возвращает на главную")
-    def test_scooter_logo_navigates_home(self, driver):
-        main = MainPage(driver)
-        main.open_main(BASE_URL)
-        main.click_order_bottom()
-        main.click_scooter_logo()
-        assert "qa-scooter.praktikum-services.ru" in driver.current_url, "Не открылось главный сайт"
+@allure.feature("Order")
+class TestOrder:
 
-    @allure.title("Логотип Яндекса открывает Dzen в новом окне")
-    def test_yandex_logo_opens_dzen(self, driver):
+    @allure.title("Проверка успешного оформления заказа через верхнюю кнопку")
+    def test_order_from_top_button(self, driver):
         main = MainPage(driver)
-        main.open_main(BASE_URL)
-        main.click_yandex_logo()
-        handles = driver.window_handles
-        assert len(handles) >= 2, "Не открылось новое окно при клике на логотип Яндекса"
-        driver.switch_to.window(handles[-1])
-        assert "dzen.ru" in driver.current_url or "zen.yandex" in driver.current_url, "Не открылось Dzen"
+        order = OrderPage(driver)
+        main.open(BASE_URL)
+        main.accept_cookies()
+        main.click_order_top()
+        order.fill_first_step("Иван","Иванов","Москва, Тверская 1","Пушкинская", "+79990001111")
+        order.fill_second_step_and_confirm("2025-10-07")
+        assert order.is_success_modal_visible(), "Модальное окно подтверждения заказа на появилась"
+
+    @allure.title("Проверка успешного оформления заказа через нижнюю кнопку")
+    def test_order_from_bottom_button(self, driver):
+        main = MainPage(driver)
+        order = OrderPage(driver)
+        main.open(BASE_URL)
+        main.accept_cookies()
+        main.click_order_bottom()
+        order.fill_first_step("Мария","Сидорова", "Санкт_Петербург, Невский 10", "Адмиралтейская", "+78889992222")
+        order.fill_second_step_and_confirm("2025-10-08")
+        assert order.is_success_modal_visible(),"Модальное окно подтверждения заказа на появилась"
