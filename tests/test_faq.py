@@ -6,7 +6,6 @@ from data import BASE_URL
 
 
 
-
 @allure.feature("FAQ")
 class TestFAQPage:
 
@@ -21,15 +20,3 @@ class TestFAQPage:
         answer = faq.get_answer(index)
         assert answer and len(answer) > 0, f"Ответ для вопроса{index} пустой"
 
-        @staticmethod
-        def _accert_cookies(driver):
-            possible_classes = ["App_CookieConsent__1yUIN", "App_CookieText__1sbqp"]
-            for class_name in possible_classes:
-                try:
-                    btn = WebDriverWait(driver, 5).until(
-                        EC.element_to_be_clickable((By.CLASS_NAME, class_name))
-                    )
-                    btn.click()
-                    break
-                except:
-                    continue
