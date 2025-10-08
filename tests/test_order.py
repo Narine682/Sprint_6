@@ -27,4 +27,4 @@ class TestOrder:
         main.click_order_bottom()
         order.fill_first_step("Мария","Сидорова", "Санкт_Петербург, Невский 10", "Адмиралтейская", "+78889992222")
         order.fill_second_step_and_confirm("2025-10-08")
-        assert order.is_success_modal_visible(),"Модальное окно подтверждения заказа на появилась"
+        assert order.is_success_modal_visible(),"Модальное окно подтверждения заказа на появилось"

@@ -12,7 +12,7 @@ class TestNavigation:
         main.click_order_bottom()
         main.click_scooter_logo()
         current_url = main.current_url()
-        assert "qa-scooter.praktikum-services.ru" in driver.current_url,  "Не открылся главный сайт"
+        assert "qa-scooter.praktikum-services.ru" in current_url,  "Не открылся главный сайт"
 
     @allure.title("Клик по лдготипу Яндекса открывает новое окно")
     def test_yandex_logo_opens_new_tab(self, driver):
@@ -30,4 +30,4 @@ class TestNavigation:
         handles = main.get_window_handles()
         main.switch_to_window(handles[-1])
         current_url = main.current_url()
-        assert "dzen.ru" in driver.current_url or "zen.yandex" in driver.current_url, "Не открылся сайт Dzen"
+        assert "dzen.ru" in current_url or "zen.yandex" in current_url, "Не открылся сайт Dzen"

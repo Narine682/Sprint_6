@@ -18,5 +18,5 @@ class TestFAQPage:
         main.accept_cookies()
         faq.open_question(index)
         answer = faq.get_answer(index)
-        assert answer and len(answer) > 0, f"Ответ для вопроса{index} пустой"
+        assert answer and len(answer) > 0, f"Ответ для вопроса {index} пустой"
 
