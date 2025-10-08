@@ -16,7 +16,7 @@ class TestOrder:
         main.click_order_top()
         order.fill_first_step("Иван","Иванов","Москва, Тверская 1","Пушкинская", "+79990001111")
         order.fill_second_step_and_confirm("2025-10-07")
-        assert order.is_success_modal_visible(), "Модальное окно подтверждения заказа на появилась"
+        assert order.is_success_modal_visible(), "Модальное окно подтверждения заказа не появилась"
 
     @allure.title("Проверка успешного оформления заказа через нижнюю кнопку")
     def test_order_from_bottom_button(self, driver):
@@ -27,4 +27,4 @@ class TestOrder:
         main.click_order_bottom()
         order.fill_first_step("Мария","Сидорова", "Санкт_Петербург, Невский 10", "Адмиралтейская", "+78889992222")
         order.fill_second_step_and_confirm("2025-10-08")
-        assert order.is_success_modal_visible(),"Модальное окно подтверждения заказа на появилось"
+        assert order.is_success_modal_visible(),"Модальное окно подтверждения заказа не появилось"
